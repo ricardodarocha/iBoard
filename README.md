@@ -16,3 +16,67 @@ e-->b
 f-->b
 p-->e
 ```
+
+## structure
+
+``` delphi
+IBoard<E> = Interface
+  func canMove(O, D): boolean;
+  func getE(e): E;
+  prop Element[Index: integer]: E read getE;
+end;
+
+IBoardElement = interface
+  Element: IElement;
+  Background: IElementColor;
+end;
+```
+
+Example, implementation of Knight using iBoard
+
+``` Delphi
+TKnight = class(IElement)
+  func canMove(O, D; Board: IBoard): boolean;
+  func getE(e): E;
+ end;
+ 
+ implementation
+ 
+TKnight.canMove(O, D; Board: IBoard): boolean;
+ begin
+   Result := (Board.DeltaX(O,D) + Board.DeltaY(O,D) = 3) and (Board.DeltaX(O,D) * Board.DeltaY(O,D) = 2);
+ end;
+```
+
+as TBoard also implements canMove, then the game can check general situations first;
+
+``` delphi
+implementation
+
+TBorad.canMove(O, D): boolean;
+ begin
+   Result := (Element(O).Background = CurrentPlayer.Background and Element(D).Background = None);
+ end;
+```
+
+And Before Move just calling the engine verification
+
+``` delphi
+if not GameOver(CurrentUser) then
+if UserInCheck(CurrentUser) then chooseStrategy(SafeYourself)
+else chooseStrategy(NormalGame);
+```
+
+Implementing mos advanced rules
+
+``` delphi
+implementation
+
+TBorad.canMove(O, D): boolean;
+ begin
+   if isCastle(O, D) then Result := chooseStrategy(Castle)
+   else if isPawnPassant(O, D) then Result := chooseStrategy(Castle)
+   else if isPromotion(O, D) then Result := chooseStrategy(Promotion)
+   else  Result := (Element(O).Background = CurrentPlayer.Background and Element(D).Background = None);
+ end;
+```
