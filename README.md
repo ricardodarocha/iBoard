@@ -67,7 +67,7 @@ if UserInCheck(CurrentUser) then chooseStrategy(SafeYourself)
 else chooseStrategy(NormalGame);
 ```
 
-Implementing mos advanced rules
+Implementing most advanced rules
 
 ``` delphi
 implementation
